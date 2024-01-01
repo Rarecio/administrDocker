@@ -1,6 +1,7 @@
 package ru.zhaleykin.rabbitmq;
 
-//import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageListener;
@@ -13,14 +14,12 @@ import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.context.annotation.Bean;
 
 public class RabbitConfiguration {
-//    Logger logger = Logger.getLogger(RabbitConfiguration.class);
+    Logger logger = LoggerFactory.getLogger(RabbitConfiguration.class);
 
     //настраиваем соединение с RabbitMQ
     @Bean
     public ConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory =
-                new CachingConnectionFactory("localhost");
-        return connectionFactory;
+        return new CachingConnectionFactory("localhost");
     }
 
     @Bean
@@ -35,23 +34,18 @@ public class RabbitConfiguration {
 
     //объявляем очередь с именем queue1
     @Bean
-    public Queue myQueue1() {
-        return new Queue("queue1");
+    public Queue myQueue() {
+        return new Queue("meQueue");
     }
 
     //объявляем контейнер, который будет содержать листенер для сообщений
-    @Bean
-    public SimpleMessageListenerContainer messageListenerContainer1(ConnectionFactory connectionFactory) {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-        container.setQueueNames("queue1");
-        container.setMessageListener(new MessageListener() {
-            //тут ловим сообщения из queue1
-            public void onMessage(Message message) {
-                System.out.println("received from queue1 : " + new String(message.getBody()));
-//                logger.info("received from queue1 : " + new String(message.getBody()));
-            }
-        });
-        return container;
-    }
+//    @Bean
+//    public SimpleMessageListenerContainer messageListenerContainer1(ConnectionFactory connectionFactory) {
+//        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+//        container.setConnectionFactory(connectionFactory);
+//        container.setQueueNames("queue1");
+//        //тут ловим сообщения из queue1
+//        container.setMessageListener((MessageListener) message -> logger.info("received from queue1 : " + new String(message.getBody())));
+//        return container;
+//    }
 }
