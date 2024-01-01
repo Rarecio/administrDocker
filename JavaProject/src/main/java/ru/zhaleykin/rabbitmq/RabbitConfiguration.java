@@ -35,7 +35,7 @@ public class RabbitConfiguration {
     //объявляем очередь с именем queue1
     @Bean
     public Queue myQueue() {
-        return new Queue("meQueue");
+        return new Queue("myQueue");
     }
 
     //объявляем контейнер, который будет содержать листенер для сообщений
